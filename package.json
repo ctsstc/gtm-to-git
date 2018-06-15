@@ -21,5 +21,8 @@
   "bugs": {
     "url": "https://github.com/ctsstc/gtm-to-git/issues"
   },
-  "homepage": "https://github.com/ctsstc/gtm-to-git#readme"
+  "homepage": "https://github.com/ctsstc/gtm-to-git#readme",
+  "dependencies": {
+    "dotenv": "^6.0.0"
+  }
 }
