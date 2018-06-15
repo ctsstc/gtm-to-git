@@ -1,7 +1,7 @@
 {
   "name": "gtm-to-git",
   "version": "1.0.0",
-  "description": "",
+  "description": "Create a filesystem from GTM, so you can save to a git repository. Eventually build and push your changes back to GTM.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
