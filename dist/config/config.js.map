@@ -1,0 +1,1 @@
+{"version":3,"file":"config.js","sourceRoot":"","sources":["../../src/config/config.ts"],"names":[],"mappings":";;AAAA,mCAAgC;AAChC,eAAM,EAAE,CAAC;AAET,kBAAe;IACb,SAAS,EAAE,OAAO,CAAC,GAAG,CAAC,WAAW;CACnC,CAAC","sourcesContent":["import { config } from 'dotenv';\nconfig();\n\nexport default {\n  gtmApiKey: process.env.GTM_API_KEY\n};\n"]}

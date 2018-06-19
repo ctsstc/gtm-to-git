@@ -1,0 +1,1 @@
+{"version":3,"file":"index.js","sourceRoot":"","sources":["../src/index.ts"],"names":[],"mappings":";;;;;;AAGA,6DAAqC;AAErC,OAAO,CAAC,GAAG,CAAC,gBAAM,CAAC,SAAS,CAAC,CAAA","sourcesContent":["#!/usr/bin/env node\n\n//import program from 'commander';\nimport config from './config/config';\n\nconsole.log(config.gtmApiKey)"]}
