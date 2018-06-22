@@ -1,6 +1,20 @@
 #!/usr/bin/env node
+// import program from 'commander';
 
-//import program from 'commander';
-import config from './config/config';
+import GTM from './gtm/gtm';
 
-console.log(config.gtmApiKey)
+(async () => {
+  const gtm = new GTM();
+  const accounts = gtm.accounts.getAccounts();
+  const containers = gtm.containers.getContainers();
+
+  accounts.then((resAccounts) => {
+    console.log('ACCOUNTS', resAccounts.data);
+  });
+
+  containers.then((resContainers) => {
+    console.log('CONTAINERS', resContainers.data);
+  });
+
+  await Promise.all([accounts, containers]);
+})();

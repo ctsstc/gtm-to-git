@@ -3,11 +3,13 @@
   "version": "1.0.0",
   "description": "Create a filesystem from GTM, so you can save to a git repository. Eventually build and push your changes back to GTM.",
   "main": "index.js",
-  "bin":{ 
+  "bin": {
     "gtm2git": "./dist/index.js"
   },
   "scripts": {
     "build": "tsc",
+    "lint": "tslint ./src/**/*.ts",
+    "lint:fix": "tslint --fix src/**/*.ts",
     "start": "ts-node ./src/index.ts",
     "start:dist": "node ./dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -37,6 +39,7 @@
     "@types/dotenv": "^4.0.3",
     "@types/node": "^10.3.3",
     "ts-node": "^6.1.1",
+    "tslint": "^5.10.0",
     "typescript": "^2.9.2"
   }
 }
