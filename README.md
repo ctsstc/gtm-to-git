@@ -9,9 +9,15 @@ This allows you to pull down HTML from a GTM container and stores it in a local 
 1. Save the key as `JSON`
 1. Save the Client Email and Private Key from the JSON downloaded in the previous step into your `.env`
 
-## CLI Research
+## Resources
 
-### NPM Packages
+### Documentation
+
+- [http://google.github.io/google-api-nodejs-client/modules/_apis_tagmanager_v2_.html](http://google.github.io/google-api-nodejs-client/modules/_apis_tagmanager_v2_.html)
+
+### CLI Research
+
+#### NPM Packages
 
 - commander
 - yargs
