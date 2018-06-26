@@ -7,22 +7,13 @@ import Input from './Input';
 (async () => {
   const gtm = new GTM();
   const input = new Input(gtm);
-  const accounts = await input.getAccount();
+  const account = await input.getAccount().catch(Errors.genericError);
 
-  /// CONTAINERS
-
-  const containersResponse = await gtm.containers.getContainers().catch(Errors.genericError);
-
-  if (!containersResponse) {
-    console.log('No Containers Response');
-    return;
+  if (!account || !account.accountId) {
+    return console.log('No Account or Account ID Found');
   }
 
-  const containers = containersResponse.data.container;
-
-  /*containers.then((resContainers) => {
-    console.log('CONTAINERS', resContainers.data);
-  });*/
+  const container = await input.getContainer(account.accountId).catch(Errors.genericError);
 
   // await Promise.all([accounts, containers]);
 
