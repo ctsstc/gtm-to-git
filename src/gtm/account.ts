@@ -1,4 +1,4 @@
-import Axios, { AxiosPromise } from 'axios';
+import { AxiosPromise } from 'axios';
 import { tagmanager_v2 as gtm } from 'googleapis';
 // node_modules/googleapis/build/src/apis/tagmanager/v2.d.ts
 // node_modules/googleapis/build/src/apis/tagmanager/v2.d.ts

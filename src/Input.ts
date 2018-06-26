@@ -1,6 +1,7 @@
 import { tagmanager_v2 as tmv2 } from 'googleapis';
 import readLine from 'readline-promise';
 import Errors from './errors';
+import Formatter from './formatter';
 import GTM from './gtm/gtm';
 
 export default class Input {
@@ -28,7 +29,7 @@ export default class Input {
       return Promise.reject('No Accounts');
     }
 
-    const accountsString = this.listCollection(accounts, 'name');
+    const accountsString =  Formatter.listCollection(accounts, 'name');
     const chosenAccount = await this.choseFromCollection(`Choose an Account:\n${accountsString}`, accounts);
 
     return Promise.resolve(chosenAccount);
@@ -46,7 +47,7 @@ export default class Input {
       return Promise.reject('No Containers');
     }
 
-    const containerString = this.listCollection(containers, 'name');
+    const containerString = Formatter.listCollection(containers, 'name');
     const chosenContainer = await this.choseFromCollection(`Choose a Container:\n${containerString}`, containers);
 
     return Promise.resolve(chosenContainer);
@@ -61,15 +62,5 @@ export default class Input {
       chosenAccount = collection[accountAnswerI - 1];
     } while (!chosenAccount);
     return Promise.resolve(chosenAccount);
-  }
-
-  private listCollection(collection: object[], key: string): string {
-    const stringBuilder: string[] = [];
-    if (collection) {
-      for (let i = 0; i < collection.length; i++) {
-        stringBuilder.push(`${i + 1}: ${collection[i][key as keyof object]}`);
-      }
-    }
-    return stringBuilder.join('\n');
   }
 }

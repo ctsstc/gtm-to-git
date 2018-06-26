@@ -2,7 +2,7 @@
 // import program from 'commander';
 import Errors from './errors';
 import GTM from './gtm/gtm';
-import Input from './Input';
+import Input from './input';
 
 (async () => {
   const gtm = new GTM();
