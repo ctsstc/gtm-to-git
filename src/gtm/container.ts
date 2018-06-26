@@ -8,7 +8,18 @@ export default class Container {
     this.gtmContainers = new gtm.Resource$Accounts$Containers(this.tagManager);
   }
 
-  public getContainers(accountId: string): AxiosPromise<gtm.Schema$ListContainersResponse> {
-    return this.gtmContainers.list({ parent: `accounts/${accountId}` });
+  public async all(accountId: string): Promise<gtm.Schema$Container[]> {
+    const containersResponse = await this.gtmContainers.list({ parent: `accounts/${accountId}` });
+
+    if (!containersResponse) {
+      return Promise.reject('No Containers Response');
+    }
+
+    const containers = containersResponse.data.container;
+    if (!containers) {
+      return Promise.reject('No Containers');
+    }
+
+    return Promise.resolve(containers);
   }
 }

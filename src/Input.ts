@@ -1,4 +1,4 @@
-import { tagmanager_v2 as tmv2 } from 'googleapis';
+import { tagmanager_v2 as gtmv2 } from 'googleapis';
 import readLine from 'readline-promise';
 import Errors from './errors';
 import Formatter from './formatter';
@@ -18,35 +18,16 @@ export default class Input {
     this.rl.close();
   }
 
-  public async getAccount(): Promise<tmv2.Schema$Account> {
-    const accountsResponse = await this.gtm.accounts.getAccounts().catch(Errors.genericError);
-    if (!accountsResponse) {
-      return Promise.reject('No Accounts Response');
-    }
-
-    const accounts = accountsResponse.data.account;
-    if (!accounts) {
-      return Promise.reject('No Accounts');
-    }
-
-    const accountsString =  Formatter.listCollection(accounts, 'name');
+  public async getAccount(): Promise<gtmv2.Schema$Account> {
+    const accounts = await this.gtm.accounts.all().catch(Errors.genericError) as gtmv2.Schema$Account[];
+    const accountsString = Formatter.listCollection(accounts, 'name');
     const chosenAccount = await this.choseFromCollection(`Choose an Account:\n${accountsString}`, accounts);
 
     return Promise.resolve(chosenAccount);
   }
 
-  public async getContainer(accountId: string): Promise<tmv2.Schema$Container> {
-    const containersResponse = await this.gtm.containers.getContainers(accountId).catch(Errors.genericError);
-
-    if (!containersResponse) {
-      return Promise.reject('No Containers Response');
-    }
-
-    const containers = containersResponse.data.container;
-    if (!containers) {
-      return Promise.reject('No Containers');
-    }
-
+  public async getContainer(accountId: string): Promise<gtmv2.Schema$Container> {
+    const containers = await this.gtm.containers.all(accountId).catch(Errors.genericError) as gtmv2.Schema$Container[];
     const containerString = Formatter.listCollection(containers, 'name');
     const chosenContainer = await this.choseFromCollection(`Choose a Container:\n${containerString}`, containers);
 
