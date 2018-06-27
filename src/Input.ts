@@ -34,6 +34,16 @@ export default class Input {
     return Promise.resolve(chosenContainer);
   }
 
+  public async getWorkspace(accountId: string, containerId: string) {
+    const workspaces = await this.gtm.workspaces
+      .all(accountId, containerId)
+      .catch(Errors.genericError) as gtmv2.Schema$Workspace[];
+    const workspaceString = Formatter.listCollection(workspaces, 'name');
+    const chosenWorkspace = await this.choseFromCollection(`Choose a Workspace:\n${workspaceString}`, workspaces);
+
+    return Promise.resolve(chosenWorkspace);
+  }
+
   private async choseFromCollection<T>(question: string, collection: T[]): Promise<T> {
     let chosenAccount;
     do {

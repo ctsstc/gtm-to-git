@@ -7,15 +7,18 @@ import Input from './input';
 (async () => {
   const gtm = new GTM();
   const input = new Input(gtm);
-  const account = await input.getAccount().catch(Errors.genericError);
 
-  if (!account || !account.accountId) {
-    return console.log('No Account or Account ID Found');
+  const account = await input.getAccount();
+  if (!account.accountId) {
+    return console.log('No Account ID Found');
   }
 
-  const container = await input.getContainer(account.accountId).catch(Errors.genericError);
+  const container = await input.getContainer(account.accountId);
+  if (!container.containerId) {
+    return console.log('No Container ID Found');
+  }
 
-  // await Promise.all([accounts, containers]);
+  const workspace = await input.getWorkspace(account.accountId, container.containerId);
 
   input.closeInput();
 })();
