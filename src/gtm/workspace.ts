@@ -1,4 +1,3 @@
-import { AxiosPromise } from 'axios';
 import { tagmanager_v2 as gtm } from 'googleapis';
 
 export default class Workspace {

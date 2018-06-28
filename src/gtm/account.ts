@@ -1,5 +1,8 @@
-import { AxiosPromise } from 'axios';
 import { tagmanager_v2 as gtm } from 'googleapis';
+
+/*interface Schema$Account {
+  containers: gtm.Resource$Accounts$Containers
+}*/
 
 export default class Account {
   private gtmAccounts: gtm.Resource$Accounts;

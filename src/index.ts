@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 // import program from 'commander';
-import Errors from './errors';
 import GTM from './gtm/gtm';
 import Input from './input';
 
