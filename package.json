@@ -12,7 +12,7 @@
     "lint:fix": "tslint --fix src/**/*.ts",
     "start": "ts-node ./src/index.ts",
     "start:dist": "node ./dist/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha -r ts-node/register src/**/*spec.ts"
   },
   "repository": {
     "type": "git",
@@ -37,8 +37,12 @@
     "readline-promise": "^1.0.3"
   },
   "devDependencies": {
+    "@types/chai": "^4.1.4",
     "@types/dotenv": "^4.0.3",
+    "@types/mocha": "^5.2.3",
     "@types/node": "^10.3.3",
+    "chai": "^4.1.2",
+    "mocha": "^5.2.0",
     "ts-node": "^6.1.1",
     "tslint": "^5.10.0",
     "typescript": "^2.9.2"

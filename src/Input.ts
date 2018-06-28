@@ -1,6 +1,7 @@
-import { tagmanager_v2 } from 'googleapis';
+import { tagmanager_v2 as gtmv2 } from 'googleapis';
 import readLine from 'readline-promise';
 import Errors from './errors';
+import Formatter from './formatter';
 import GTM from './gtm/gtm';
 
 export default class Input {
@@ -17,45 +18,40 @@ export default class Input {
     this.rl.close();
   }
 
-  public async getAccount(): Promise<tagmanager_v2.Schema$Account> {
-    const accountsResponse = await this.gtm.accounts.getAccounts().catch(Errors.genericError);
-
-    if (!accountsResponse) {
-      return Promise.reject('No Accounts Response');
-    }
-
-    const accounts = accountsResponse.data.account;
-    if (!accounts) {
-      return Promise.reject('No Accounts');
-    }
-
-    const stringBuilder: string[] = [];
-    if (accounts) {
-      for (let i = 0; i < accounts.length; i++) {
-        stringBuilder.push(`${i + 1}: ${accounts[i].name}`);
-      }
-    }
-
-    const accountsString = this.listAccounts(accounts);
-    let chosenAccount;
-    do {
-      const accountAnswer = await this.rl.questionAsync(`Choose an Account:\n${accountsString}\n>> `);
-      console.log(''); // Add an extra line after input
-      const accountAnswerI = parseInt(accountAnswer, 10);
-      chosenAccount = accounts[accountAnswerI - 1];
-    } while (!chosenAccount);
+  public async getAccount(): Promise<gtmv2.Schema$Account> {
+    const accounts = await this.gtm.accounts.all().catch(Errors.genericError) as gtmv2.Schema$Account[];
+    const accountsString = Formatter.listCollection(accounts, 'name');
+    const chosenAccount = await this.choseFromCollection(`Choose an Account:\n${accountsString}`, accounts);
 
     return Promise.resolve(chosenAccount);
   }
 
-  private listAccounts(accounts: tagmanager_v2.Schema$Account[]): string {
-    const stringBuilder: string[] = [];
-    if (accounts) {
-      for (let i = 0; i < accounts.length; i++) {
-        stringBuilder.push(`${i + 1}: ${accounts[i].name}`);
-      }
-    }
+  public async getContainer(accountId: string): Promise<gtmv2.Schema$Container> {
+    const containers = await this.gtm.containers.all(accountId).catch(Errors.genericError) as gtmv2.Schema$Container[];
+    const containerString = Formatter.listCollection(containers, 'name');
+    const chosenContainer = await this.choseFromCollection(`Choose a Container:\n${containerString}`, containers);
 
-    return stringBuilder.join('\n');
+    return Promise.resolve(chosenContainer);
+  }
+
+  public async getWorkspace(accountId: string, containerId: string) {
+    const workspaces = await this.gtm.workspaces
+      .all(accountId, containerId)
+      .catch(Errors.genericError) as gtmv2.Schema$Workspace[];
+    const workspaceString = Formatter.listCollection(workspaces, 'name');
+    const chosenWorkspace = await this.choseFromCollection(`Choose a Workspace:\n${workspaceString}`, workspaces);
+
+    return Promise.resolve(chosenWorkspace);
+  }
+
+  private async choseFromCollection<T>(question: string, collection: T[]): Promise<T> {
+    let chosenAccount;
+    do {
+      const accountAnswer = await this.rl.questionAsync(`${question}\n>> `);
+      console.log(''); // Add an extra line after input
+      const accountAnswerI = parseInt(accountAnswer, 10);
+      chosenAccount = collection[accountAnswerI - 1];
+    } while (!chosenAccount);
+    return Promise.resolve(chosenAccount);
   }
 }

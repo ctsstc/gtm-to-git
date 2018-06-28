@@ -1,30 +1,23 @@
 #!/usr/bin/env node
 // import program from 'commander';
-import Errors from './errors';
 import GTM from './gtm/gtm';
-import Input from './Input';
+import Input from './input';
 
 (async () => {
   const gtm = new GTM();
   const input = new Input(gtm);
-  const accounts = await input.getAccount();
 
-  /// CONTAINERS
-
-  const containersResponse = await gtm.containers.getContainers().catch(Errors.genericError);
-
-  if (!containersResponse) {
-    console.log('No Containers Response');
-    return;
+  const account = await input.getAccount();
+  if (!account.accountId) {
+    return console.log('No Account ID Found');
   }
 
-  const containers = containersResponse.data.container;
+  const container = await input.getContainer(account.accountId);
+  if (!container.containerId) {
+    return console.log('No Container ID Found');
+  }
 
-  /*containers.then((resContainers) => {
-    console.log('CONTAINERS', resContainers.data);
-  });*/
-
-  // await Promise.all([accounts, containers]);
+  const workspace = await input.getWorkspace(account.accountId, container.containerId);
 
   input.closeInput();
 })();

@@ -1,7 +1,8 @@
-import Axios, { AxiosPromise } from 'axios';
 import { tagmanager_v2 as gtm } from 'googleapis';
-// node_modules/googleapis/build/src/apis/tagmanager/v2.d.ts
-// node_modules/googleapis/build/src/apis/tagmanager/v2.d.ts
+
+/*interface Schema$Account {
+  containers: gtm.Resource$Accounts$Containers
+}*/
 
 export default class Account {
   private gtmAccounts: gtm.Resource$Accounts;
@@ -10,7 +11,18 @@ export default class Account {
     this.gtmAccounts = new gtm.Resource$Accounts(this.tagManager);
   }
 
-  public getAccounts(): AxiosPromise<gtm.Schema$ListAccountsResponse> {
-    return this.gtmAccounts.list(); // 91730 3466834650
+  public async all(): Promise<gtm.Schema$Account[]> {
+    const accountsResponse = await this.gtmAccounts.list();
+
+    if (!accountsResponse) {
+      return Promise.reject('No Accounts Response');
+    }
+
+    const accounts = accountsResponse.data.account;
+    if (!accounts) {
+      return Promise.reject('No Accounts');
+    }
+
+    return Promise.resolve(accounts);
   }
 }
