@@ -1,13 +1,15 @@
-import { tagmanager_v2 as gtm } from 'googleapis';
+import { tagmanager_v2 as gtmv2 } from 'googleapis';
+import Container from './container';
+import GTM from './gtm';
 
 export default class Containers {
-  private gtmContainers: gtm.Resource$Accounts$Containers;
+  private gtmContainers: gtmv2.Resource$Accounts$Containers;
 
-  constructor(private tagManager: gtm.Tagmanager) {
-    this.gtmContainers = new gtm.Resource$Accounts$Containers(this.tagManager);
+  constructor(private tagManager: gtmv2.Tagmanager, private gtm: GTM ) {
+    this.gtmContainers = new gtmv2.Resource$Accounts$Containers(this.tagManager);
   }
 
-  public async all(accountId: string): Promise<gtm.Schema$Container[]> {
+  public async all(accountId: string): Promise<Container[]> {
     const containersResponse = await this.gtmContainers.list({ parent: `accounts/${accountId}` });
 
     if (!containersResponse) {
@@ -19,6 +21,6 @@ export default class Containers {
       return Promise.reject('No Containers');
     }
 
-    return Promise.resolve(containers);
+    return Promise.resolve(containers.map((container) => new Container(container, this.gtm)));
   }
 }
