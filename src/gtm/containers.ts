@@ -1,6 +1,6 @@
 import { tagmanager_v2 as gtm } from 'googleapis';
 
-export default class Container {
+export default class Containers {
   private gtmContainers: gtm.Resource$Accounts$Containers;
 
   constructor(private tagManager: gtm.Tagmanager) {

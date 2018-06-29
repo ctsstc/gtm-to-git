@@ -1,6 +1,6 @@
 import { tagmanager_v2 as gtm } from 'googleapis';
 
-export default class Workspace {
+export default class Workspaces {
   private gtmWorkspaces: gtm.Resource$Accounts$Containers$Workspaces;
 
   constructor(private tagManager: gtm.Tagmanager) {
