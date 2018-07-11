@@ -1,26 +1,22 @@
 import { tagmanager_v2 as gtm } from 'googleapis';
+import GTM from './gtm';
+import Tag from './tag';
 
-export default class Workspace {
-  private gtmWorkspaces: gtm.Resource$Accounts$Containers$Workspaces;
+export default class Workspace implements gtm.Schema$Workspace {
+  public accountId: string;
+  public containerId: string;
+  public id: string;
+  public name: string;
 
-  constructor(private tagManager: gtm.Tagmanager) {
-    this.gtmWorkspaces = new gtm.Resource$Accounts$Containers$Workspaces(this.tagManager);
+  constructor(workspace: gtm.Schema$Workspace, private tagManager: GTM) {
+    this.accountId = workspace.accountId || '';
+    this.containerId = workspace.containerId || '';
+
+    this.id = workspace.workspaceId || '';
+    this.name = workspace.name || '';
   }
 
-  public async all(accountId: string, containerId: string): Promise<gtm.Schema$Workspace[]> {
-    const workspaceResponse = await this.gtmWorkspaces.list(
-      { parent: `accounts/${accountId}/containers/${containerId}` }
-    );
-
-    if (!workspaceResponse) {
-      return Promise.reject('No Workspace Response');
-    }
-
-    const workspaces = workspaceResponse.data.workspace;
-    if (!workspaces) {
-      return Promise.reject('No Workspaces');
-    }
-
-    return Promise.resolve(workspaces);
+  public tags(): Promise<Tag[]> {
+    return this.tagManager.tags.all(this.accountId, this.containerId, this.id);
   }
 }
