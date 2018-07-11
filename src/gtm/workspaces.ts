@@ -1,13 +1,15 @@
-import { tagmanager_v2 as gtm } from 'googleapis';
+import { tagmanager_v2 as gtmv2 } from 'googleapis';
+import GTM from './gtm';
+import Workspace from './workspace';
 
 export default class Workspaces {
-  private gtmWorkspaces: gtm.Resource$Accounts$Containers$Workspaces;
+  private gtmWorkspaces: gtmv2.Resource$Accounts$Containers$Workspaces;
 
-  constructor(private tagManager: gtm.Tagmanager) {
-    this.gtmWorkspaces = new gtm.Resource$Accounts$Containers$Workspaces(this.tagManager);
+  constructor(private tagManager: gtmv2.Tagmanager, private gtm: GTM) {
+    this.gtmWorkspaces = new gtmv2.Resource$Accounts$Containers$Workspaces(this.tagManager);
   }
 
-  public async all(accountId: string, containerId: string): Promise<gtm.Schema$Workspace[]> {
+  public async all(accountId: string, containerId: string): Promise<Workspace[]> {
     const workspaceResponse = await this.gtmWorkspaces.list(
       { parent: `accounts/${accountId}/containers/${containerId}` }
     );
@@ -21,6 +23,6 @@ export default class Workspaces {
       return Promise.reject('No Workspaces');
     }
 
-    return Promise.resolve(workspaces);
+    return Promise.resolve(workspaces.map((workspace) => new Workspace(workspace, this.gtm)));
   }
 }

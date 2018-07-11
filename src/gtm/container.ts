@@ -1,6 +1,6 @@
 import { tagmanager_v2 as gtm } from 'googleapis';
 import GTM from './gtm';
-import Workspaces from './workspaces';
+import Workspace from './workspace';
 
 export default class Container implements gtm.Schema$Container {
 
@@ -15,7 +15,7 @@ export default class Container implements gtm.Schema$Container {
     this.name = container.name || '';
   }
 
-  public workspaces(): Promise<gtm.Schema$Workspace[]> {
+  public workspaces(): Promise<Workspace[]> {
     return this.tagManager.workspaces.all(this.accountId, this.id);
   }
 }

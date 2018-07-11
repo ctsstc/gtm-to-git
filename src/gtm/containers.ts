@@ -5,7 +5,7 @@ import GTM from './gtm';
 export default class Containers {
   private gtmContainers: gtmv2.Resource$Accounts$Containers;
 
-  constructor(private tagManager: gtmv2.Tagmanager, private gtm: GTM ) {
+  constructor(private tagManager: gtmv2.Tagmanager, private gtm: GTM) {
     this.gtmContainers = new gtmv2.Resource$Accounts$Containers(this.tagManager);
   }
 
