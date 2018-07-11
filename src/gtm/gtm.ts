@@ -3,6 +3,7 @@ import { tagmanager_v2 as gtm } from 'googleapis';
 import config from '../config/config';
 import Accounts from './accounts';
 import Containers from './containers';
+import Tags from './tags';
 import Workspaces from './workspaces';
 
 export default class GTM {
@@ -10,6 +11,7 @@ export default class GTM {
   public accounts: Accounts;
   public containers: Containers;
   public workspaces: Workspaces;
+  public tags: Tags;
 
   private jwtClient: JWT;
   private tagManager: gtm.Tagmanager;
@@ -20,5 +22,6 @@ export default class GTM {
     this.accounts = new Accounts(this.tagManager, this);
     this.containers = new Containers(this.tagManager, this);
     this.workspaces = new Workspaces(this.tagManager, this);
+    this.tags = new Tags(this.tagManager, this);
   }
 }

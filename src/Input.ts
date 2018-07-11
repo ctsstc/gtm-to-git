@@ -5,6 +5,7 @@ import Formatter from './formatter';
 import Account from './gtm/account';
 import Container from './gtm/container';
 import GTM from './gtm/gtm';
+import Workspace from './gtm/workspace';
 
 export default class Input {
   private rl: readLine.ReadLine;
@@ -36,10 +37,10 @@ export default class Input {
     return Promise.resolve(chosenContainer);
   }
 
-  public async getWorkspace(accountId: string, containerId: string) {
+  public async getWorkspace(accountId: string, containerId: string): Promise<Workspace> {
     const workspaces = await this.gtm.workspaces
       .all(accountId, containerId)
-      .catch(Errors.genericError) as gtmv2.Schema$Workspace[];
+      .catch(Errors.genericError) as Workspace[];
     const workspaceString = Formatter.listCollection(workspaces, 'name');
     const chosenWorkspace = await this.choseFromCollection(`Choose a Workspace:\n${workspaceString}`, workspaces);
 

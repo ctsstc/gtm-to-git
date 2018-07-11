@@ -11,5 +11,8 @@ import Input from './input';
   const container = await input.getContainer(account.id);
   const workspace = await input.getWorkspace(account.id, container.id);
 
+  const tags = await workspace.tags();
+  console.log(tags[0].tag);
+
   input.closeInput();
 })();
